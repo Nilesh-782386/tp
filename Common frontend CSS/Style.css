@@ -4,7 +4,6 @@
   padding: 0;
   box-sizing: border-box;
 }
-
 body {
   font-family: 'Arial', sans-serif;
   line-height: 1.6;
@@ -16,7 +15,6 @@ body {
   animation: gradientShift 8s ease infinite;
   background-size: 200% 200%;
 }
-
 @keyframes gradientShift {
   0% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
