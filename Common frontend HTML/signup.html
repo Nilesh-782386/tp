@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - CareConnect</title>
+    <link rel="stylesheet" href="/Common frontend CSS/signup.css">
+</head>
+<body>
+    <div class="container">
+        <div class="form-container">
+            <div class="logo">CareConnect</div>
+            
+            <div id="message" class="hidden"></div>
+            
+            <div class="tabs">
+                <button class="tab-button active" data-tab="donor">Donor</button>
+                <button class="tab-button" data-tab="volunteer">Volunteer</button>
+                <button class="tab-button" data-tab="ngo">NGO</button>
+            </div>
+            
+            <!-- Donor Signup Form -->
+            <form id="donorForm" class="tab-content active">
+                <div class="form-group">
+                    <label for="donorName" class="required">Full Name *</label>
+                    <input type="text" id="donorName" name="name" placeholder="Enter your full name" required>
+                    <div class="error-text" id="donorNameError"></div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="donorEmail" class="required">Email Address *</label>
+                    <input type="email" id="donorEmail" name="email" placeholder="Enter your email address" required>
+                    <div class="error-text" id="donorEmailError"></div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="donorMobile" class="required">Mobile Number *</label>
+                    <input type="tel" id="donorMobile" name="mobile" placeholder="Enter 10-digit mobile number" 
+                           pattern="[6-9][0-9]{9}" maxlength="10" required>
+                    <div class="error-text" id="donorMobileError"></div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="donorAddress" class="required">Address *</label>
+                    <textarea id="donorAddress" name="address" placeholder="Enter your complete address" rows="3" required></textarea>
+                    <div class="error-text" id="donorAddressError"></div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="donorPassword" class="required">Password *</label>
+                    <input type="password" id="donorPassword" name="password" placeholder="Create a password (min 6 characters)" 
+                           minlength="6" required>
+                    <div class="error-text" id="donorPasswordError"></div>
+                </div>
+                
+                <button type="submit" class="btn btn-primary">Sign Up as Donor</button>
+            </form>
+            
+            <!-- Volunteer Signup Form -->
+            <form id="volunteerForm" class="tab-content">
+                <div class="form-group">
+                    <label for="volunteerName" class="required">Full Name *</label>
+                    <input type="text" id="volunteerName" name="name" placeholder="Enter your full name" required>
+                    <div class="error-text" id="volunteerNameError"></div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="volunteerEmail" class="required">Email Address *</label>
+                    <input type="email" id="volunteerEmail" name="email" placeholder="Enter your email address" required>
+                    <div class="error-text" id="volunteerEmailError"></div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="volunteerMobile" class="required">Mobile Number *</label>
+                    <input type="tel" id="volunteerMobile" name="mobile" placeholder="Enter 10-digit mobile number" 
+                           pattern="[6-9][0-9]{9}" maxlength="10" required>
+                    <div class="error-text" id="volunteerMobileError"></div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="volunteerAddress" class="required">Address *</label>
+                    <textarea id="volunteerAddress" name="address" placeholder="Enter your complete address" rows="3" required></textarea>
+                    <div class="error-text" id="volunteerAddressError"></div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="volunteerPassword" class="required">Password *</label>
+                    <input type="password" id="volunteerPassword" name="password" placeholder="Create a password (min 6 characters)" 
+                           minlength="6" required>
+                    <div class="error-text" id="volunteerPasswordError"></div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="volunteerSkills">Skills & Interests</label>
+                    <textarea id="volunteerSkills" name="skills" placeholder="Describe your skills and areas of interest for volunteering (optional)" rows="3"></textarea>
+                    <div class="error-text" id="volunteerSkillsError"></div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="volunteerAvailability">Availability</label>
+                    <select id="volunteerAvailability" name="availability">
+                        <option value="">Select your availability (optional)</option>
+                        <option value="weekdays">Weekdays</option>
+                        <option value="weekends">Weekends</option>
+                        <option value="both">Both weekdays and weekends</option>
+                        <option value="flexible">Flexible</option>
+                    </select>
+                    <div class="error-text" id="volunteerAvailabilityError"></div>
+                </div>
+                
+                <button type="submit" class="btn btn-primary">Sign Up as Volunteer</button>
+            </form>
+            
+            <!-- NGO Signup Form -->
+            <form id="ngoForm" class="tab-content">
+                <div class="form-group">
+                    <label for="ngoName" class="required">Organization Name *</label>
+                    <input type="text" id="ngoName" name="name" placeholder="Enter organization name" required>
+                    <div class="error-text" id="ngoNameError"></div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="ngoEmail" class="required">Email Address *</label>
+                    <input type="email" id="ngoEmail" name="email" placeholder="Enter organization email address" required>
+                    <div class="error-text" id="ngoEmailError"></div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="ngoMobile" class="required">Contact Number *</label>
+                    <input type="tel" id="ngoMobile" name="mobile" placeholder="Enter 10-digit contact number" 
+                           pattern="[6-9][0-9]{9}" maxlength="10" required>
+                    <div class="error-text" id="ngoMobileError"></div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="ngoAddress" class="required">Organization Address *</label>
+                    <textarea id="ngoAddress" name="address" placeholder="Enter complete organization address" rows="3" required></textarea>
+                    <div class="error-text" id="ngoAddressError"></div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="ngoPassword" class="required">Password *</label>
+                    <input type="password" id="ngoPassword" name="password" placeholder="Create a password (min 6 characters)" 
+                           minlength="6" required>
+                    <div class="error-text" id="ngoPasswordError"></div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="ngoRegistration" class="required">Registration Number *</label>
+                    <input type="text" id="ngoRegistration" name="registration" placeholder="Enter organization registration number" required>
+                    <div class="error-text" id="ngoRegistrationError"></div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="ngoFocus">Focus Areas</label>
+                    <textarea id="ngoFocus" name="focus" placeholder="Describe your organization's focus areas and activities (optional)" rows="3"></textarea>
+                    <div class="error-text" id="ngoFocusError"></div>
+                </div>
+                
+                <button type="submit" class="btn btn-primary">Sign Up as NGO</button>
+            </form>
+            
+            <div class="link-container">
+                <a href="/Common frontend HTML/login.html">Already have an account? Login here</a>
+            </div>
+        </div>
+    </div>
+    <script src="/Common frontend JS/signup.js"></script>
+</body>
+</html>

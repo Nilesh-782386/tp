@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Donate - CareConnect</title>
+    <link rel="stylesheet" href="/Common frontend CSS/signup.css">
+</head>
+<body>
+    <div class="container">
+        <div class="form-container">
+            <div class="logo">CareConnect</div>
+            
+            <div id="message" class="hidden"></div>
+            
+            <form id="donationForm">
+                <div class="form-group">
+                    <label for="itemType" class="required">Item Type</label>
+                    <select id="itemType" name="itemType" required>
+                        <option value="">Select item type</option>
+                        <option value="clothing">Clothing</option>
+                        <option value="food">Food</option>
+                        <option value="books">Books</option>
+                        <option value="furniture">Furniture</option>
+                        <option value="electronics">Electronics</option>
+                        <option value="medical">Medical Supplies</option>
+                        <option value="other">Other</option>
+                    </select>
+                    <div class="error-text" id="itemTypeError"></div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="itemName" class="required">Item Name/Description</label>
+                    <input type="text" id="itemName" name="itemName" placeholder="e.g., Winter Jackets, Rice Bags, etc." required>
+                    <div class="error-text" id="itemNameError"></div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="quantity" class="required">Quantity</label>
+                    <input type="number" id="quantity" name="quantity" min="1" placeholder="Enter quantity" required>
+                    <div class="error-text" id="quantityError"></div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="condition" class="required">Condition</label>
+                    <select id="condition" name="condition" required>
+                        <option value="">Select condition</option>
+                        <option value="new">New</option>
+                        <option value="like_new">Like New</option>
+                        <option value="good">Good</option>
+                        <option value="fair">Fair</option>
+                    </select>
+                    <div class="error-text" id="conditionError"></div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="pickupAddress" class="required">Pickup Address</label>
+                    <textarea id="pickupAddress" name="pickupAddress" placeholder="Enter complete pickup address" rows="3" required></textarea>
+                    <div class="error-text" id="pickupAddressError"></div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="preferredDate">Preferred Pickup Date</label>
+                    <input type="date" id="preferredDate" name="preferredDate" min="">
+                </div>
+                
+                <div class="form-group">
+                    <label for="preferredTime">Preferred Pickup Time</label>
+                    <select id="preferredTime" name="preferredTime">
+                        <option value="">Select time slot</option>
+                        <option value="morning">Morning (9 AM - 12 PM)</option>
+                        <option value="afternoon">Afternoon (12 PM - 4 PM)</option>
+                        <option value="evening">Evening (4 PM - 7 PM)</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="specialInstructions">Special Instructions</label>
+                    <textarea id="specialInstructions" name="specialInstructions" placeholder="Any special instructions for pickup" rows="2"></textarea>
+                </div>
+                
+                <button type="submit" class="btn btn-primary">Submit Donation</button>
+            </form>
+            
+            <div class="link-container">
+                <a href="signup.html">Not registered yet? Sign up here</a> | 
+                <a href="login.html">Already have an account? Login here</a>
+            </div>
+        </div>
+    </div>
+    <script src="/signup.js"></script>
+</body>
+</html>

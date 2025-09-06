@@ -1,4 +1,4 @@
-// login.js - Fixed Login functionality
+// login.js - Enhanced Login functionality with improved user type handling
 
 document.addEventListener('DOMContentLoaded', function() {
     const loginForm = document.getElementById('loginForm');
@@ -127,7 +127,20 @@ document.addEventListener('DOMContentLoaded', function() {
                 // Login successful
                 console.log('Login successful for user:', user.name);
                 setLoadingState(false);
-                showSuccess('Login successful! Redirecting to dashboard...');
+                
+                // Determine user type for display
+                let userTypeDisplay = 'User';
+                if (user.userType) {
+                    userTypeDisplay = user.userType.charAt(0).toUpperCase() + user.userType.slice(1);
+                } else if (user.is_volunteer) {
+                    userTypeDisplay = 'Volunteer';
+                } else if (user.is_ngo) {
+                    userTypeDisplay = 'NGO';
+                } else {
+                    userTypeDisplay = 'Donor';
+                }
+                
+                showSuccess(`Welcome back ${userTypeDisplay}! Redirecting to dashboard...`);
                 
                 // Update last login time
                 user.last_login = new Date().toISOString();
@@ -137,19 +150,27 @@ document.addEventListener('DOMContentLoaded', function() {
                 users[userIndex] = user;
                 localStorage.setItem('registeredUsers', JSON.stringify(users));
                 
-                // Store current user session
+                // Store current user session with enhanced data
                 const userSession = {
                     user_id: user.user_id,
                     name: user.name,
                     email: user.email,
                     mobile: user.mobile,
                     address: user.address,
+                    userType: user.userType || (user.is_volunteer ? 'volunteer' : (user.is_ngo ? 'ngo' : 'donor')),
                     is_volunteer: user.is_volunteer || false,
+                    is_ngo: user.is_ngo || false,
                     login_time: new Date().toISOString()
                 };
+
+                // Add type-specific data
+                if (user.skills) userSession.skills = user.skills;
+                if (user.availability) userSession.availability = user.availability;
+                if (user.registration_number) userSession.registration_number = user.registration_number;
+                if (user.focus_areas) userSession.focus_areas = user.focus_areas;
                 
                 localStorage.setItem('currentUser', JSON.stringify(userSession));
-                console.log('User session created:', userSession);
+                console.log('User session created:', { ...userSession, password: undefined });
                 
                 // Clear form
                 loginForm.reset();
@@ -317,13 +338,19 @@ document.addEventListener('DOMContentLoaded', function() {
     console.log('Current user in localStorage:', JSON.parse(localStorage.getItem('currentUser') || 'null'));
 });
 
-// Utility functions
+// Enhanced utility functions
 function isLoggedIn() {
     return localStorage.getItem('currentUser') !== null;
 }
 
 function getCurrentUser() {
     return JSON.parse(localStorage.getItem('currentUser') || 'null');
+}
+
+function getCurrentUserType() {
+    const user = getCurrentUser();
+    if (!user) return null;
+    return user.userType || (user.is_volunteer ? 'volunteer' : (user.is_ngo ? 'ngo' : 'donor'));
 }
 
 function logoutUser() {
@@ -353,4 +380,9 @@ function debugStorage() {
     console.log('Registered Users:', localStorage.getItem('registeredUsers'));
     console.log('Current User:', localStorage.getItem('currentUser'));
     console.log('All localStorage keys:', Object.keys(localStorage));
+    
+    const currentUser = getCurrentUser();
+    if (currentUser) {
+        console.log('Current User Type:', getCurrentUserType());
+    }
 }

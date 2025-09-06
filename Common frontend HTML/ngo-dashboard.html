@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NGO Dashboard - CareConnect</title>
+    <link rel="stylesheet" href="/Common frontend CSS/dashboard.css">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="logo">CareConnect</div>
+            <div class="nav-links">
+                <a href="/Common frontend HTML/index.html">Home</a>
+                <a href="/Common frontend HTML/about.html">About</a>
+                <a href="/Common frontend HTML/donate.html">Donate</a>
+                <a href="/Common frontend HTML/volunteer.html">Volunteer</a>
+                <a href="/Common frontend HTML/ngo.html">NGO</a>
+                <a href="/Common frontend HTML/ngo-dashboard.html" class="active">Dashboard</a>
+                <button class="btn btn-outline" onclick="logout()">Logout</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <!-- Welcome Message -->
+            <div id="message" class="message hidden"></div>
+            
+            <!-- Profile Header -->
+            <section class="profile-header">
+                <div class="container">
+                    <div class="profile-avatar">
+                        <div class="avatar-placeholder" id="avatar-placeholder">
+                            <!-- Will show first letter of organization name -->
+                        </div>
+                    </div>
+                    <div class="profile-info">
+                        <h1 id="org-name">Loading...</h1>
+                        <span class="role-badge ngo" id="user-role">NGO</span>
+                        <p class="welcome-text">Welcome to your NGO Dashboard!</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- NGO Statistics -->
+            <section class="ngo-stats">
+                <h2>Organization Impact</h2>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">💰</div>
+                        <div class="stat-details">
+                            <h3 id="funds-received">₹0</h3>
+                            <label>Funds Received</label>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">👥</div>
+                        <div class="stat-details">
+                            <h3 id="beneficiaries-served">0</h3>
+                            <label>Beneficiaries Served</label>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">🤝</div>
+                        <div class="stat-details">
+                            <h3 id="volunteers-connected">0</h3>
+                            <label>Volunteers Connected</label>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">🎯</div>
+                        <div class="stat-details">
+                            <h3 id="projects-completed">0</h3>
+                            <label>Projects Completed</label>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Organization Information -->
+            <section class="org-info">
+                <h2>Organization Profile</h2>
+                <div class="info-grid">
+                    <div class="info-card">
+                        <div class="info-icon">📧</div>
+                        <div class="info-details">
+                            <label>Email Address</label>
+                            <span id="org-email">Loading...</span>
+                        </div>
+                    </div>  
+                    <div class="info-card">
+                        <div class="info-icon">📱</div>
+                        <div class="info-details">
+                            <label>Contact Number</label>
+                            <span id="org-mobile">Loading...</span>
+                        </div>
+                    </div>
+                    <div class="info-card">
+                        <div class="info-icon">🏢</div>
+                        <div class="info-details">
+                            <label>Address</label>
+                            <span id="org-address">Loading...</span>
+                        </div>
+                    </div>
+                    <div class="info-card">
+                        <div class="info-icon">📅</div>
+                        <div class="info-details">
+                            <label>Member Since</label>
+                            <span id="member-since">Loading...</span>
+                        </div>
+                    </div>
+                    <div class="info-card">
+                        <div class="info-icon">📄</div>
+                        <div class="info-details">
+                            <label>Registration Number</label>
+                            <span id="registration-number">Loading...</span>
+                        </div>
+                    </div>
+                    <div class="info-card">
+                        <div class="info-icon">🎯</div>
+                        <div class="info-details">
+                            <label>Focus Areas</label>
+                            <span id="focus-areas">Not specified</span>
+                        </div>
+                    </div>
+                    <div class="info-card">
+                        <div class="info-icon">✅</div>
+                        <div class="info-details">
+                            <label>Verification Status</label>
+                            <span id="verification-status">Pending</span>
+                        </div>
+                    </div>
+                    <div class="info-card">
+                        <div class="info-icon">⭐</div>
+                        <div class="info-details">
+                            <label>Organization Rating</label>
+                            <span id="org-rating">5.0</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Edit Profile Section -->
+            <section class="edit-profile">
+                <h2>Edit Organization Profile</h2>
+                <form id="profileForm">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="edit-name">Organization Name *</label>
+                            <input type="text" id="edit-name" name="name" placeholder="Enter organization name" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="edit-email">Email Address *</label>
+                            <input type="email" id="edit-email" name="email" placeholder="Enter email address" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="edit-mobile">Contact Number</label>
+                            <input type="tel" id="edit-mobile" name="mobile" placeholder="Contact number" maxlength="10" readonly>
+                            <small style="color: #666; font-size: 0.8rem;">Contact number cannot be changed</small>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="edit-registration">Registration Number</label>
+                            <input type="text" id="edit-registration" name="registration" placeholder="Registration number" readonly>
+                            <small style="color: #666; font-size: 0.8rem;">Registration number cannot be changed</small>
+                        </div>
+                        
+                        <div class="form-group full-width">
+                            <label for="edit-address">Organization Address *</label>
+                            <textarea id="edit-address" name="address" placeholder="Enter complete organization address" rows="3" required></textarea>
+                        </div>
+                        
+                        <div class="form-group full-width">
+                            <label for="edit-focus">Focus Areas</label>
+                            <textarea id="edit-focus" name="focus_areas" placeholder="Describe your organization's focus areas and activities" rows="3"></textarea>
+                        </div>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-secondary" onclick="cancelEdit()">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Update Profile</button>
+                    </div>
+                </form>
+            </section>
+
+            <!-- Current Projects -->
+            <section class="current-projects">
+                <h2>Current Projects</h2>
+                <div id="projects-list" class="projects-list">
+                    <div class="no-projects">
+                        <p>No active projects. Create your first project to start making an impact!</p>
+                    </div>
+                </div>
+                <button class="btn btn-primary" onclick="addProject()">Add New Project</button>
+            </section>
+
+            <!-- Add Project Form -->
+            <section id="add-project-section" class="edit-profile hidden">
+                <h2>Add New Project</h2>
+                <form id="projectForm">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="project-title">Project Title *</label>
+                            <input type="text" id="project-title" name="title" placeholder="Enter project title" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="project-category">Category *</label>
+                            <select id="project-category" name="category" required>
+                                <option value="">Select category</option>
+                                <option value="health">Health & Medical</option>
+                                <option value="education">Education</option>
+                                <option value="environment">Environment</option>
+                                <option value="poverty">Poverty Alleviation</option>
+                                <option value="disaster">Disaster Relief</option>
+                                <option value="women">Women Empowerment</option>
+                                <option value="children">Child Welfare</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="project-target">Target Beneficiaries</label>
+                            <input type="number" id="project-target" name="target_beneficiaries" min="1" placeholder="e.g., 100">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="project-budget">Budget Required (₹)</label>
+                            <input type="number" id="project-budget" name="budget" min="1000" placeholder="e.g., 50000">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="project-start">Start Date</label>
+                            <input type="date" id="project-start" name="start_date">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="project-end">End Date</label>
+                            <input type="date" id="project-end" name="end_date">
+                        </div>
+                        
+                        <div class="form-group full-width">
+                            <label for="project-description">Project Description *</label>
+                            <textarea id="project-description" name="description" placeholder="Describe your project goals, activities, and expected impact" rows="4" required></textarea>
+                        </div>
+                        
+                        <div class="form-group full-width">
+                            <label for="project-location">Project Location</label>
+                            <input type="text" id="project-location" name="location" placeholder="Project location/area">
+                        </div>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-secondary" onclick="cancelProject()">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Create Project</button>
+                    </div>
+                </form>
+            </section>
+
+            <!-- Donation Requests -->
+            <section class="donation-requests">
+                <h2>Recent Donation Requests</h2>
+                <div id="requests-list" class="requests-list">
+                    <div class="no-requests">
+                        <p>No donation requests yet. Create projects to receive donations!</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Volunteer Applications -->
+            <section class="volunteer-applications">
+                <h2>Volunteer Applications</h2>
+                <div id="applications-list" class="applications-list">
+                    <div class="no-applications">
+                        <p>No volunteer applications yet. Post volunteer opportunities to get applications!</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Quick Actions -->
+            <section class="extra-options">
+                <h2>Quick Actions</h2>
+                <div class="options-grid">
+                    <div class="option-card">
+                        <div class="option-icon">📝</div>
+                        <div class="option-content">
+                            <h3>Post Volunteer Opportunity</h3>
+                            <p>Create volunteer opportunities and connect with willing volunteers.</p>
+                            <button class="btn btn-outline">Post Opportunity</button>
+                        </div>
+                    </div>
+                    
+                    <div class="option-card">
+                        <div class="option-icon">💝</div>
+                        <div class="option-content">
+                            <h3>Create Donation Campaign</h3>
+                            <p>Start a donation campaign for your organization's projects.</p>
+                            <button class="btn btn-outline">Create Campaign</button>
+                        </div>
+                    </div>
+                    
+                    <div class="option-card">
+                        <div class="option-icon">📊</div>
+                        <div class="option-content">
+                            <h3>Generate Reports</h3>
+                            <p>Generate impact reports and financial statements.</p>
+                            <button class="btn btn-outline">Generate Reports</button>
+                        </div>
+                    </div>
+                    
+                    <div class="option-card">
+                        <div class="option-icon">🤝</div>
+                        <div class="option-content">
+                            <h3>Partner Network</h3>
+                            <p>Connect with other NGOs and organizations for collaboration.</p>
+                            <button class="btn btn-outline">Find Partners</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 CareConnect. All rights reserved.</p>
+            <div class="social">
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
+                <a href="#">Contact Us</a>
+            </div>
+        </div>
+    </footer>Sz
+
+    <script src="/Common frontend JS/ngo-dashboard.js"></script>
+</body>
+</html>

@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Donor Dashboard - CareConnect</title>
+    <link rel="stylesheet" href="/Common frontend CSS/dashboard.css">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="logo">CareConnect</div>
+            <div class="nav-links">
+                <a href="/Common frontend HTML/index.html">Home</a>
+                <a href="/Common frontend HTML/about.html">About</a>
+                <a href="/Common frontend HTML/donate.html">Donate</a>
+                <a href="/Common frontend HTML/volunteer.html">Volunteer</a>
+                <a href="/Common frontend HTML/ngo.html">NGO</a>
+                <a href="/Common frontend HTML/donor-dashboard.html" class="active">Dashboard</a>
+                <button class="btn btn-outline" onclick="logout()">Logout</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <!-- Welcome Message -->
+            <div id="message" class="message hidden"></div>
+            
+            <!-- Profile Header -->
+            <section class="profile-header">
+                <div class="container">
+                    <div class="profile-avatar">
+                        <div class="avatar-placeholder" id="avatar-placeholder">
+                            <!-- Will show first letter of name -->
+                        </div>
+                    </div>
+                    <div class="profile-info">
+                        <h1 id="user-name">Loading...</h1>
+                        <span class="role-badge donor" id="user-role">Donor</span>
+                        <p class="welcome-text">Welcome to your Donor Dashboard!</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Donor Statistics -->
+            <section class="donor-stats">
+                <h2>Your Donation Statistics</h2>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">🩸</div>
+                        <div class="stat-details">
+                            <h3 id="blood-donations">0</h3>
+                            <label>Blood Donations</label>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">💰</div>
+                        <div class="stat-details">
+                            <h3 id="money-donated">₹0</h3>
+                            <label>Money Donated</label>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">📦</div>
+                        <div class="stat-details">
+                            <h3 id="items-donated">0</h3>
+                            <label>Items Donated</label>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">👥</div>
+                        <div class="stat-details">
+                            <h3 id="lives-impacted">0</h3>
+                            <label>Lives Impacted</label>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- User Information -->
+            <section class="user-info">
+                <h2>Your Profile Information</h2>
+                <div class="info-grid">
+                    <div class="info-card">
+                        <div class="info-icon">📧</div>
+                        <div class="info-details">
+                            <label>Email Address</label>
+                            <span id="user-email">Loading...</span>
+                        </div>
+                    </div>  
+                    <div class="info-card">
+                        <div class="info-icon">📱</div>
+                        <div class="info-details">
+                            <label>Mobile Number</label>
+                            <span id="user-mobile">Loading...</span>
+                        </div>
+                    </div>
+                    <div class="info-card">
+                        <div class="info-icon">🏠</div>
+                        <div class="info-details">
+                            <label>Address</label>
+                            <span id="user-address">Loading...</span>
+                        </div>
+                    </div>
+                    <div class="info-card">
+                        <div class="info-icon">📅</div>
+                        <div class="info-details">
+                            <label>Member Since</label>
+                            <span id="member-since">Loading...</span>
+                        </div>
+                    </div>
+                    <div class="info-card">
+                        <div class="info-icon">🩸</div>
+                        <div class="info-details">
+                            <label>Blood Group</label>
+                            <span id="blood-group">Not Set</span>
+                        </div>
+                    </div>
+                    <div class="info-card">
+                        <div class="info-icon">⚕️</div>
+                        <div class="info-details">
+                            <label>Last Donation</label>
+                            <span id="last-donation">Never</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Edit Profile Section -->
+            <section class="edit-profile">
+                <h2>Edit Profile</h2>
+                <form id="profileForm">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="edit-name">Full Name *</label>
+                            <input type="text" id="edit-name" name="name" placeholder="Enter your full name" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="edit-email">Email Address *</label>
+                            <input type="email" id="edit-email" name="email" placeholder="Enter your email" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="edit-mobile">Mobile Number</label>
+                            <input type="tel" id="edit-mobile" name="mobile" placeholder="Mobile number" maxlength="10" readonly>
+                            <small style="color: #666; font-size: 0.8rem;">Mobile number cannot be changed</small>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="blood-group-select">Blood Group</label>
+                            <select id="blood-group-select" name="blood_group">
+                                <option value="">Select Blood Group</option>
+                                <option value="A+">A+</option>
+                                <option value="A-">A-</option>
+                                <option value="B+">B+</option>
+                                <option value="B-">B-</option>
+                                <option value="AB+">AB+</option>
+                                <option value="AB-">AB-</option>
+                                <option value="O+">O+</option>
+                                <option value="O-">O-</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group full-width">
+                            <label for="edit-address">Address *</label>
+                            <textarea id="edit-address" name="address" placeholder="Enter your complete address" rows="3" required></textarea>
+                        </div>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-secondary" onclick="cancelEdit()">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Update Profile</button>
+                    </div>
+                </form>
+            </section>
+
+            <!-- Donation History -->
+            <section class="donation-history">
+                <h2>Recent Donations</h2>
+                <div id="donation-list" class="donation-list">
+                    <div class="no-donations">
+                        <p>No donations recorded yet. Start making a difference today!</p>
+                    </div>
+                </div>
+                <button class="btn btn-primary" onclick="addDonationRecord()">Add Donation Record</button>
+            </section>
+
+            <!-- Add Donation Form -->
+            <section id="add-donation-section" class="edit-profile hidden">
+                <h2>Add Donation Record</h2>
+                <form id="donationForm">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="donation-type">Donation Type *</label>
+                            <select id="donation-type" name="donation_type" required>
+                                <option value="">Select donation type</option>
+                                <option value="blood">Blood Donation</option>
+                                <option value="money">Money Donation</option>
+                                <option value="items">Items Donation</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="donation-amount">Amount/Quantity</label>
+                            <input type="text" id="donation-amount" name="amount" placeholder="e.g., 350ml, ₹5000, 10 items">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="donation-date">Donation Date *</label>
+                            <input type="date" id="donation-date" name="donation_date" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="recipient-org">Recipient Organization</label>
+                            <input type="text" id="recipient-org" name="recipient_org" placeholder="Hospital/NGO name">
+                        </div>
+                        
+                        <div class="form-group full-width">
+                            <label for="donation-notes">Additional Notes</label>
+                            <textarea id="donation-notes" name="notes" placeholder="Any additional information" rows="3"></textarea>
+                        </div>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-secondary" onclick="cancelDonation()">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Add Donation</button>
+                    </div>
+                </form>
+            </section>
+
+            <!-- Quick Actions -->
+            <section class="extra-options">
+                <h2>Quick Actions</h2>
+                <div class="options-grid">
+                    <div class="option-card">
+                        <div class="option-icon">🩸</div>
+                        <div class="option-content">
+                            <h3>Donate Blood</h3>
+                            <p>Find nearby blood banks and schedule your next blood donation.</p>
+                            <button class="btn btn-outline">Find Blood Banks</button>
+                        </div>
+                    </div>
+                    
+                    <div class="option-card">
+                        <div class="option-icon">💰</div>
+                        <div class="option-content">
+                            <h3>Donate Money</h3>
+                            <p>Support NGOs and causes with monetary contributions.</p>
+                            <button class="btn btn-outline">Donate Now</button>
+                        </div>
+                    </div>
+                    
+                    <div class="option-card">
+                        <div class="option-icon">📦</div>
+                        <div class="option-content">
+                            <h3>Donate Items</h3>
+                            <p>Donate clothes, food, books and other essential items.</p>
+                            <button class="btn btn-outline">Donate Items</button>
+                        </div>
+                    </div>
+                    
+                    <div class="option-card">
+                        <div class="option-icon">🔍</div>
+                        <div class="option-content">
+                            <h3>Find Recipients</h3>
+                            <p>Connect with NGOs and individuals who need assistance.</p>
+                            <button class="btn btn-outline">Find Recipients</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 CareConnect. All rights reserved.</p>
+            <div class="social">
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
+                <a href="#">Contact Us</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="/Common frontend JS/donor-dashboard.js"></script>
+</body>
+</html>
