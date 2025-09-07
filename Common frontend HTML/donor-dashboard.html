@@ -22,11 +22,13 @@
             </div>
         </div>
     </nav>
+
     <!-- Main Content -->
     <main class="main-content">
         <div class="container">
             <!-- Welcome Message -->
             <div id="message" class="message hidden"></div>
+            
             <!-- Profile Header -->
             <section class="profile-header">
                 <div class="container">
@@ -42,6 +44,7 @@
                     </div>
                 </div>
             </section>
+
             <!-- Donor Statistics -->
             <section class="donor-stats">
                 <h2>Your Donation Statistics</h2>
@@ -238,7 +241,7 @@
                         <div class="option-content">
                             <h3>Donate Blood</h3>
                             <p>Find nearby blood banks and schedule your next blood donation.</p>
-                            <button class="btn btn-outline">Find Blood Banks</button>
+                            <button class="btn btn-outline" onclick="findBloodBanks()">Find Blood Banks</button>
                         </div>
                     </div>
                     
@@ -247,7 +250,7 @@
                         <div class="option-content">
                             <h3>Donate Money</h3>
                             <p>Support NGOs and causes with monetary contributions.</p>
-                            <button class="btn btn-outline">Donate Now</button>
+                            <button class="btn btn-outline" onclick="donateNow()">Donate Now</button>
                         </div>
                     </div>
                     
@@ -256,7 +259,7 @@
                         <div class="option-content">
                             <h3>Donate Items</h3>
                             <p>Donate clothes, food, books and other essential items.</p>
-                            <button class="btn btn-outline">Donate Items</button>
+                            <button class="btn btn-outline" onclick="donateItems()">Donate Items</button>
                         </div>
                     </div>
                     
@@ -265,7 +268,7 @@
                         <div class="option-content">
                             <h3>Find Recipients</h3>
                             <p>Connect with NGOs and individuals who need assistance.</p>
-                            <button class="btn btn-outline">Find Recipients</button>
+                            <button class="btn btn-outline" onclick="findRecipients()">Find Recipients</button>
                         </div>
                     </div>
                 </div>

@@ -70,7 +70,7 @@ class DashboardRouter {
         // Common routes
         this.commonRoutes = {
             login: '/Common frontend HTML/login.html',
-            register: '/Common frontend HTML/register.html',
+            signup: '/Common frontend HTML/signup.html',
             home: '/Common frontend HTML/index.html',
             about: '/Common frontend HTML/about.html',
             donate: '/Common frontend HTML/donate.html',
@@ -214,6 +214,13 @@ class DashboardRouter {
             return false;
         }
         
+        // Allow access to dashboard.html for generic dashboard
+        if (currentPath.includes('dashboard.html') && !currentPath.includes('-dashboard.html')) {
+            console.log('Redirecting from generic dashboard to specific dashboard');
+            this.redirectToCorrectDashboard();
+            return false;
+        }
+        
         // Check if user is on the correct dashboard
         if (!currentPath.includes(expectedDashboard)) {
             console.log('User on wrong dashboard, redirecting to correct dashboard');
@@ -240,8 +247,10 @@ class DashboardRouter {
         // Initialize type-specific data if not exists
         if (!users[userIndex][dataKey]) {
             console.log(`Initializing ${dataKey} for user`);
-            users[userIndex][dataKey] = { ...config.defaultData };
+            users[userIndex][dataKey] = JSON.parse(JSON.stringify(config.defaultData));
             localStorage.setItem('registeredUsers', JSON.stringify(users));
+            
+            console.log(`${dataKey} initialized:`, users[userIndex][dataKey]);
         }
     }
 
@@ -333,7 +342,7 @@ class DashboardRouter {
             
             // Ensure data structure exists
             if (!users[userIndex][dataKey]) {
-                users[userIndex][dataKey] = { ...config.defaultData };
+                users[userIndex][dataKey] = JSON.parse(JSON.stringify(config.defaultData));
             }
             
             // Update type-specific data
@@ -378,7 +387,11 @@ class DashboardRouter {
             const recordArrayMap = {
                 donor: { donation: 'donations' },
                 volunteer: { activity: 'activities' },
-                ngo: { project: 'projects', campaign: 'campaigns', opportunity: 'volunteer_opportunities' }
+                ngo: { 
+                    project: 'projects', 
+                    campaign: 'campaigns', 
+                    opportunity: 'volunteer_opportunities' 
+                }
             };
             
             const arrayKey = recordArrayMap[this.userType]?.[recordType];
@@ -388,7 +401,11 @@ class DashboardRouter {
             
             // Ensure data structure exists
             if (!users[userIndex][dataKey]) {
-                users[userIndex][dataKey] = { ...config.defaultData };
+                users[userIndex][dataKey] = JSON.parse(JSON.stringify(config.defaultData));
+            }
+            
+            if (!users[userIndex][dataKey][arrayKey]) {
+                users[userIndex][dataKey][arrayKey] = [];
             }
             
             // Add record with metadata
@@ -417,7 +434,9 @@ class DashboardRouter {
 
     // Update statistics after adding a record
     updateStatisticsAfterRecord(userData, recordType, recordData) {
-        if (!userData.statistics) return;
+        if (!userData.statistics) {
+            userData.statistics = this.dashboardConfig[this.userType].defaultData.statistics;
+        }
         
         const stats = userData.statistics;
         
@@ -425,11 +444,11 @@ class DashboardRouter {
         if (this.userType === 'donor' && recordType === 'donation') {
             if (recordData.type === 'blood') {
                 stats.blood_donations += 1;
-                stats.lives_impacted += 3;
+                stats.lives_impacted += 3; // Assume 1 blood donation can save 3 lives
             } else if (recordData.type === 'money') {
                 const amount = parseFloat(recordData.amount) || 0;
                 stats.money_donated += amount;
-                stats.lives_impacted += Math.floor(amount / 1000);
+                stats.lives_impacted += Math.floor(amount / 1000); // Assume ₹1000 impacts 1 life
             } else if (recordData.type === 'items') {
                 const items = parseInt(recordData.amount) || 1;
                 stats.items_donated += items;
@@ -442,6 +461,7 @@ class DashboardRouter {
         } else if (this.userType === 'ngo' && recordType === 'project') {
             // Projects don't immediately update statistics
             // They update when marked as completed
+            console.log('Project added, statistics will update when completed');
         }
     }
 
@@ -467,7 +487,11 @@ class DashboardRouter {
         const recordArrayMap = {
             donor: { donation: 'donations' },
             volunteer: { activity: 'activities' },
-            ngo: { project: 'projects', campaign: 'campaigns', opportunity: 'volunteer_opportunities' }
+            ngo: { 
+                project: 'projects', 
+                campaign: 'campaigns', 
+                opportunity: 'volunteer_opportunities' 
+            }
         };
         
         const arrayKey = recordArrayMap[this.userType]?.[recordType];
@@ -476,11 +500,101 @@ class DashboardRouter {
         return fullUser[dataKey]?.[arrayKey] || [];
     }
 
+    // Get user type-specific data
+    getUserTypeData() {
+        const fullUser = this.getUserDetails();
+        if (!fullUser) return null;
+        
+        const config = this.dashboardConfig[this.userType];
+        const dataKey = config.dataKey;
+        
+        return fullUser[dataKey] || null;
+    }
+
+    // Update statistics manually (for admin or bulk operations)
+    updateStatistics(newStats) {
+        try {
+            const users = JSON.parse(localStorage.getItem('registeredUsers') || '[]');
+            const userIndex = users.findIndex(u => u.user_id === this.currentUser.user_id);
+            
+            if (userIndex === -1) {
+                throw new Error('User not found');
+            }
+            
+            const config = this.dashboardConfig[this.userType];
+            const dataKey = config.dataKey;
+            
+            // Ensure data structure exists
+            if (!users[userIndex][dataKey]) {
+                users[userIndex][dataKey] = JSON.parse(JSON.stringify(config.defaultData));
+            }
+            
+            // Update statistics
+            Object.assign(users[userIndex][dataKey].statistics, newStats);
+            
+            // Save to localStorage
+            localStorage.setItem('registeredUsers', JSON.stringify(users));
+            
+            console.log('Statistics updated successfully');
+            return true;
+        } catch (error) {
+            console.error('Error updating statistics:', error);
+            return false;
+        }
+    }
+
     // Logout user
     logout() {
         console.log('Logging out user');
         this.clearSession();
         this.redirectToLogin();
+    }
+
+    // Get user role display name
+    getRoleDisplayName() {
+        const config = this.getDashboardConfig();
+        return config ? config.role : 'User';
+    }
+
+    // Check if current user is of specific type
+    isUserType(type) {
+        return this.userType === type;
+    }
+
+    // Get available user actions based on type and features
+    getAvailableActions() {
+        const config = this.getDashboardConfig();
+        if (!config) return [];
+        
+        const actionMap = {
+            donor: [
+                'add_donation',
+                'view_statistics',
+                'update_blood_group',
+                'view_donation_history'
+            ],
+            volunteer: [
+                'add_activity',
+                'view_opportunities',
+                'update_skills',
+                'view_activity_history'
+            ],
+            ngo: [
+                'create_project',
+                'create_campaign',
+                'post_opportunity',
+                'view_applications',
+                'generate_report'
+            ]
+        };
+        
+        return actionMap[this.userType] || [];
+    }
+
+    // Validate user permissions for specific action
+    canPerformAction(action) {
+        const availableActions = this.getAvailableActions();
+        return availableActions.includes(action);
     }
 
     // Debug function
@@ -491,6 +605,9 @@ class DashboardRouter {
         console.log('Dashboard Config:', this.getDashboardConfig());
         console.log('Full User Details:', this.getUserDetails());
         console.log('Statistics:', this.getStatistics());
+        console.log('User Type Data:', this.getUserTypeData());
+        console.log('Available Actions:', this.getAvailableActions());
+        console.log('Session Expired:', this.isSessionExpired());
         console.log('==============================');
     }
 }
@@ -500,8 +617,65 @@ window.dashboardRouter = new DashboardRouter();
 
 // Auto-initialize on DOM load if on a dashboard page
 document.addEventListener('DOMContentLoaded', function() {
-    const isDashboardPage = window.location.pathname.includes('-dashboard');
+    const isDashboardPage = window.location.pathname.includes('-dashboard') || 
+                          window.location.pathname.includes('dashboard.html');
+    
     if (isDashboardPage) {
+        const success = window.dashboardRouter.init();
+        
+        if (success) {
+            console.log('Dashboard router initialized successfully');
+            
+            // Make router available globally for dashboard scripts
+            window.router = window.dashboardRouter;
+            
+            // Dispatch custom event for dashboard initialization
+            window.dispatchEvent(new CustomEvent('dashboardReady', {
+                detail: {
+                    userType: window.dashboardRouter.userType,
+                    config: window.dashboardRouter.getDashboardConfig()
+                }
+            }));
+        }
+    }
+});
+
+// Handle browser back/forward buttons
+window.addEventListener('popstate', function(event) {
+    const isDashboardPage = window.location.pathname.includes('-dashboard') || 
+                          window.location.pathname.includes('dashboard.html');
+    
+    if (isDashboardPage && window.dashboardRouter) {
         window.dashboardRouter.init();
     }
 });
+
+// Handle page visibility change (when user switches tabs)
+document.addEventListener('visibilitychange', function() {
+    if (!document.hidden && window.dashboardRouter && window.dashboardRouter.currentUser) {
+        // Check if session is still valid when user returns to tab
+        if (window.dashboardRouter.isSessionExpired()) {
+            console.log('Session expired while away, logging out');
+            window.dashboardRouter.logout();
+        }
+    }
+});
+
+// Global error handler for router
+window.addEventListener('error', function(event) {
+    if (event.error && event.error.message && event.error.message.includes('dashboardRouter')) {
+        console.error('Dashboard Router Error:', event.error);
+        
+        // Try to recover by reinitializing
+        if (window.dashboardRouter) {
+            setTimeout(() => {
+                window.dashboardRouter.init();
+            }, 1000);
+        }
+    }
+});
+
+// Export for module usage
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = DashboardRouter;
+}
